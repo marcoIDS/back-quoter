@@ -7,6 +7,7 @@
 /**
  * Resourceful controller for interacting with destinations
  */
+const Destination = use('App/Models/Destination');
 class DestinationController {
   /**
    * Show a list of all destinations.
@@ -18,6 +19,9 @@ class DestinationController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    let destination = await Destination.all();
+
+    return response.status(200).json(destination);
   }
 
   /**
@@ -41,6 +45,17 @@ class DestinationController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const {name,city, country,continent, description, active } = request.all();
+
+    const destination = new Destination; 
+    destination.name = name;
+    destination.city = city;
+    destination.country = country;
+    destination.continent = continent;
+    destination.description = description;
+    destination.active = active;   
+    await destination.save();
+    return response.status(200).json(destination);
   }
 
   /**
@@ -53,6 +68,13 @@ class DestinationController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    const destination = await Destination.find(params.id);
+    if(!destination){
+      return response.status(404).json({data: "Resource not found"});
+    }
+    //const users = await business.users().fetch();
+    //const vehicles = await business.vehicles().fetch();
+    return response.json({destination});
   }
 
   /**
@@ -76,6 +98,24 @@ class DestinationController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    const {name,city, country,continent, description, active } = request.all();
+
+    const destination = await Destination.find(params.id);
+
+    if(!destination){
+      return response.status(404).json({data: "Resource not found"});
+    }else{
+      destination.name = name;
+      destination.city = city;
+      destination.country = country;
+      destination.continent = continent;
+      destination.description = description;
+      destination.active = active;
+      await destination.save();
+      return response.status(200).json(destination);
+    }
+
+
   }
 
   /**
@@ -87,6 +127,14 @@ class DestinationController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    const destination = await Destination.find(params.id);
+    
+    if(!destination){
+      return response.status(404).json({data: "Resource not found"});
+    }
+    await destination.delete();
+    return response.status(204).json(null);
+
   }
 }
 

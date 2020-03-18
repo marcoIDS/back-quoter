@@ -7,87 +7,67 @@
 /**
  * Resourceful controller for interacting with auths
  */
+const User = use('App/Models/User');
 class AuthController {
-  /**
-   * Show a list of all auths.
-   * GET auths
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async index ({ request, response, view }) {
-    //Index
+
+  async login ({ request, response, auth }) {
+    const {email, password} = request.all();
+    const user = await auth.attempt(email,password);
+
+    return response.json(user);
+  }
+  
+  async register ({ request, response, auth }) {
+    try {
+      const {name,username, lastName_1,lastName_2, email, password, role_id, telephone} = request.all();
+      const user = new User; 
+
+      user.name = name;
+      user.username = username;
+      user.lastName_1 = lastName_1;
+      user.lastName_2 = lastName_2;
+      user.email = email;
+      user.password = password;
+      user.role_id = role_id;     
+      user.telephone = telephone;
+
+      await user.save();
+      return response.status(200).json(user);
+    } catch (error) {
+      return response.status(500).json({msg: error});
+      
+    }
+    
   }
 
-  /**
-   * Render a form to be used for creating a new auth.
-   * GET auths/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
+  async updateUser({request, response, auth, params}){
+    const {name,username, lastName_1,lastName_2, email, password, role_id, telephone} = request.all();
+
+    const user = await User.find(params.id);
+
+    if(!user){
+      return response.status(404).json({data:'Resource not found'});
+    }
+    user.name = name;
+    user.username = username;
+    user.lastName_1 = lastName_1;
+    user.lastName_2 = lastName_2;
+    user.email = email;
+    user.password = password;
+    user.role_id = role_id;     
+    user.telephone = telephone;
+    await user.save();
+    return response.status(200).json(user);
   }
 
-  /**
-   * Create/save a new auth.
-   * POST auths
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async store ({ request, response }) {
-  }
+  async deleteUser({request, response, auth, params}){
+    const user = await User.find(params.id);
 
-  /**
-   * Display a single auth.
-   * GET auths/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async show ({ params, request, response, view }) {
-  }
-
-  /**
-   * Render a form to update an existing auth.
-   * GET auths/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
-  }
-
-  /**
-   * Update auth details.
-   * PUT or PATCH auths/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async update ({ params, request, response }) {
-  }
-
-  /**
-   * Delete a auth with id.
-   * DELETE auths/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy ({ params, request, response }) {
+    if(!user){
+      return response.status(404).json({data: "Resource not found"});
+    }
+    await user.delete();
+    return response.status(204).json(null);
   }
 }
 
