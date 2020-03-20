@@ -114,6 +114,12 @@ class ServiceTypeController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    const serviceType = await ServiceType.find(params.id);
+    if(!serviceType){
+      return response.status(404).json({data: "Resource not found"});
+    }
+    await serviceType.delete();
+    return response.status(204).json(null);
   }
 }
 

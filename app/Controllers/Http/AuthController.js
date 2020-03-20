@@ -21,7 +21,6 @@ class AuthController {
     try {
       const {name,username, lastName_1,lastName_2, email, password, role_id, telephone} = request.all();
       const user = new User; 
-
       user.name = name;
       user.username = username;
       user.lastName_1 = lastName_1;

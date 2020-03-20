@@ -7,6 +7,7 @@
 /**
  * Resourceful controller for interacting with suppliers
  */
+const Supplier = use('App/Models/Supplier');
 class SupplierController {
   /**
    * Show a list of all suppliers.
@@ -18,6 +19,9 @@ class SupplierController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    let suppliers = await Supplier.all();
+
+    return response.status(200).json(suppliers);
   }
 
   /**
@@ -41,6 +45,21 @@ class SupplierController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const {nameSupplier,contact,phone,cellphone,address,email,comments,description,active,type_service_id} = request.all();
+
+    const supplier = new Supplier; 
+    supplier.nameSupplier = nameSupplier;
+    supplier.contact = contact;
+    supplier.phone = phone;
+    supplier.cellphone = cellphone;
+    supplier.address = address;
+    supplier.email = email;
+    supplier.comments = comments;
+    supplier.description = description;
+    supplier.active = active;
+    supplier.type_service_id = type_service_id;
+    await supplier.save();
+    return response.status(200).json(supplier);
   }
 
   /**
@@ -53,6 +72,11 @@ class SupplierController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    const supplier = await Supplier.find(params.id);
+    if(!supplier){
+      return response.status(404).json({data: "Resource not found"});
+    }
+    return response.json({supplier});
   }
 
   /**
@@ -76,6 +100,25 @@ class SupplierController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    const {nameSupplier,contact,phone,cellphone,address,email,comments,description,active,type_service_id} = request.all();
+    const supplier = await Supplier.find(params.id);
+
+    if(!supplier){
+      return response.status(404).json({data: "Resource not found"});
+    }else{
+      supplier.nameSupplier = nameSupplier;
+      supplier.contact = contact;
+      supplier.phone = phone;
+      supplier.cellphone = cellphone;
+      supplier.address = address;
+      supplier.email = email;
+      supplier.comments = comments;
+      supplier.description = description;
+      supplier.active = active;
+      supplier.type_service_id = type_service_id;
+      await supplier.save();
+      return response.status(200).json(supplier);
+    }
   }
 
   /**
@@ -87,6 +130,12 @@ class SupplierController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    const supplier = await Supplier.find(params.id);
+    if(!supplier){
+      return response.status(404).json({data: "Resource not found"});
+    }
+    await supplier.delete();
+    return response.status(204).json(null);
   }
 }
 
