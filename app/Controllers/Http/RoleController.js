@@ -7,6 +7,7 @@
 /**
  * Resourceful controller for interacting with roles
  */
+const Role = use('App/Models/Role');
 class RoleController {
   /**
    * Show a list of all roles.
@@ -18,6 +19,9 @@ class RoleController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    let roles = await Role.all();
+
+    return response.status(200).json(roles);
   }
 
   /**
@@ -41,6 +45,13 @@ class RoleController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const {name, description} = request.all();
+
+    const role = new Role; 
+    role.name = name;
+    role.description = description;
+    await role.save();
+    return response.status(200).json(role);
   }
 
   /**
@@ -53,6 +64,11 @@ class RoleController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    const role = await Role.find(params.id);
+    if(!role){
+      return response.status(404).json({data: "Resource not found"});
+    }
+    return response.json({role});
   }
 
   /**
@@ -76,6 +92,17 @@ class RoleController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    const {name, description} = request.all();
+    const role = await Role.find(params.id);
+
+    if(!role){
+      return response.status(404).json({data: "Resource not found"});
+    }else{
+      role.name = name;
+      role.description = description;
+      await role.save();
+      return response.status(200).json(role);
+    }
   }
 
   /**
@@ -87,6 +114,12 @@ class RoleController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    const role = await Role.find(params.id);
+    if(!role){
+      return response.status(404).json({data: "Resource not found"});
+    }
+    await role.delete();
+    return response.status(204).json(null);
   }
 }
 

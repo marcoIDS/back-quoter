@@ -7,6 +7,7 @@
 /**
  * Resourceful controller for interacting with photos
  */
+const Photo = use('App/Models/Photo');
 class PhotoController {
   /**
    * Show a list of all photos.
@@ -18,6 +19,9 @@ class PhotoController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    let photos = await Photo.all();
+
+    return response.status(200).json(photos);
   }
 
   /**
@@ -41,6 +45,14 @@ class PhotoController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const {url, service_id,condominium_id} = request.all();
+
+    const photo = new Photo; 
+    photo.url = url;
+    photo.service_id = service_id;
+    photo.condominium_id = condominium_id;
+    await photo.save();
+    return response.status(200).json(photo);
   }
 
   /**
@@ -53,6 +65,11 @@ class PhotoController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    const photo = await Photo.find(params.id);
+    if(!photo){
+      return response.status(404).json({data: "Resource not found"});
+    }
+    return response.json({photo});
   }
 
   /**
@@ -76,6 +93,20 @@ class PhotoController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    const {url, service_id,condominium_id} = request.all();
+
+    const photo = await Photo.find(params.id);
+
+    if(!photo){
+      return response.status(404).json({data: "Resource not found"});
+    }else{
+      const photo = new Photo; 
+      photo.url = url;
+      photo.service_id = service_id;
+      photo.condominium_id = condominium_id;
+      await photo.save();
+      return response.status(200).json(photo);
+    }
   }
 
   /**
@@ -87,6 +118,13 @@ class PhotoController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    const photo = await Photo.find(params.id);
+    if(!photo){
+      return response.status(404).json({data: "Resource not found"});
+    }
+    await photo.delete();
+    return response.status(204).json(null);
+
   }
 }
 

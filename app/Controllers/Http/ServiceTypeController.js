@@ -7,6 +7,7 @@
 /**
  * Resourceful controller for interacting with servicetypes
  */
+const ServiceType = use('App/Models/ServiceType');
 class ServiceTypeController {
   /**
    * Show a list of all servicetypes.
@@ -18,6 +19,9 @@ class ServiceTypeController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    let serviceTypes = await ServiceType.all();
+
+    return response.status(200).json(serviceTypes);
   }
 
   /**
@@ -41,6 +45,13 @@ class ServiceTypeController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const {name,active} = request.all();
+
+    const serviceType = new ServiceType; 
+    serviceType.name = name;
+    serviceType.active = active;
+    await serviceType.save();
+    return response.status(200).json(serviceType);
   }
 
   /**
@@ -53,6 +64,11 @@ class ServiceTypeController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    const serviceType = await ServiceType.find(params.id);
+    if(!serviceType){
+      return response.status(404).json({data: "Resource not found"});
+    }
+    return response.json({serviceType});
   }
 
   /**
@@ -76,6 +92,17 @@ class ServiceTypeController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    const {name, active} = request.all();
+    const serviceType = await ServiceType.find(params.id);
+
+    if(!serviceType){
+      return response.status(404).json({data: "Resource not found"});
+    }else{
+      serviceType.name = name;
+      serviceType.active = active;
+      await serviceType.save();
+      return response.status(200).json(serviceType);
+    }
   }
 
   /**
