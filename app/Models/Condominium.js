@@ -15,6 +15,9 @@ class Condominium extends Model {
     static get incrementing () {
         return false
     }
+    branchOffice() {
+        return this.belongsTo('App/Models/BranchOffice')
+    }
 }
 
 module.exports = Condominium

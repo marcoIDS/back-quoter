@@ -15,6 +15,14 @@ class BranchOffice extends Model {
     static get incrementing () {
         return false
     }
+
+    supplier() {
+        return this.belongsTo('App/Models/Supplier')
+    }
+
+    destination() {
+        return this.belongsTo('App/Models/Destination')
+    }
 }
 
 module.exports = BranchOffice

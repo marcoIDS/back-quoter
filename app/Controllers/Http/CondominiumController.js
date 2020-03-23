@@ -19,7 +19,7 @@ class CondominiumController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let condominiums = await Condominium.all();
+    let condominiums = await Condominium.query().with('branchOffice').fetch();
 
     return response.status(200).json(condominiums);
   }
@@ -101,9 +101,8 @@ class CondominiumController {
     if(!condominium){
       return response.status(404).json({data: "Resource not found"});
     }
-    //const users = await business.users().fetch();
-    //const vehicles = await business.vehicles().fetch();
-    return response.json({condominium});
+    const branch_office = await condominium.branchOffice().fetch()
+    return response.json({condominium,branch_office});
   }
 
   /**

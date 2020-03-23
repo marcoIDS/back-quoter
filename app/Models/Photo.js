@@ -15,6 +15,14 @@ class Photo extends Model {
     static get incrementing () {
         return false
     }
+
+    service() {
+        return this.belongsTo('App/Models/Service')
+    }
+
+    condominum(){
+        return this.belongsTo('App/Models/Condominium')
+    }
 }
 
 module.exports = Photo

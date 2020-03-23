@@ -15,6 +15,10 @@ class Supplier extends Model {
     static get incrementing () {
         return false
     }
+
+    serviceType() {
+        return this.hasOne('App/Models/ServiceType','type_service_id','id');
+    }
 }
 
 module.exports = Supplier

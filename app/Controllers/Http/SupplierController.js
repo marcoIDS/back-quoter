@@ -19,8 +19,7 @@ class SupplierController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let suppliers = await Supplier.all();
-
+    let suppliers = await Supplier.query().with('serviceType').fetch()
     return response.status(200).json(suppliers);
   }
 
@@ -76,7 +75,8 @@ class SupplierController {
     if(!supplier){
       return response.status(404).json({data: "Resource not found"});
     }
-    return response.json({supplier});
+    const serviceType = await supplier.serviceType().fetch()
+    return response.json({supplier,serviceType});
   }
 
   /**

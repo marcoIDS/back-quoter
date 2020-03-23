@@ -19,7 +19,7 @@ class BranchOfficeController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let branchoffices = await BranchOffice.all();
+    let branchoffices = await BranchOffice.query().with('supplier').with('destination').fetch()
 
     return response.status(200).json(branchoffices);
   }
@@ -77,9 +77,10 @@ class BranchOfficeController {
     if(!branchoffice){
       return response.status(404).json({data: "Resource not found"});
     }
-    //const users = await business.users().fetch();
-    //const vehicles = await business.vehicles().fetch();
-    return response.json({branchoffice});
+
+    const supplier = await branchoffice.supplier().fetch()
+    const destination = await branchoffice.destination().fetch()
+    return response.json({branchoffice,supplier,destination});
   }
 
   /**

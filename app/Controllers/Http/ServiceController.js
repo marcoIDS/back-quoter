@@ -19,8 +19,7 @@ class ServiceController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let services = await Service.all();
-
+    let services = await Service.query().with('condominum').with('branchOffice').fetch();
     return response.status(200).json(services);
   }
 
@@ -78,7 +77,9 @@ class ServiceController {
     if(!service){
       return response.status(404).json({data: "Resource not found"});
     }
-    return response.json({service});
+    const condominum = await service.condominum().fetch();
+    const branchOffice = await service.branchOffice().fetch();
+    return response.json({service,condominum,branchOffice});
   }
 
   /**

@@ -15,6 +15,12 @@ class Service extends Model {
     static get incrementing () {
         return false
     }
+    condominum(){
+        return this.belongsTo('App/Models/Condominium')
+    }
+    branchOffice() {
+        return this.belongsTo('App/Models/BranchOffice')
+    }
 }
 
 module.exports = Service

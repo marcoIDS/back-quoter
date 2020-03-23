@@ -19,7 +19,7 @@ class PhotoController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let photos = await Photo.all();
+    let photos = await Photo.query().with('service').with('condominum').fetch();
 
     return response.status(200).json(photos);
   }
@@ -69,7 +69,9 @@ class PhotoController {
     if(!photo){
       return response.status(404).json({data: "Resource not found"});
     }
-    return response.json({photo});
+    const service = await photo.service().fetch()
+    const condominum = await photo.condominum().fetch();
+    return response.json({photo,service,condominum});
   }
 
   /**
