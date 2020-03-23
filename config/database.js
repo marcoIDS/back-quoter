@@ -68,6 +68,7 @@ module.exports = {
   | npm i --save pg
   |
   */
+ //pg connection
   pg: {
     client: 'pg',
     connection: {
