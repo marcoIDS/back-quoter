@@ -16,7 +16,7 @@ module.exports = {
   | interacting with SQL databases.
   |
   */
-  connection: Env.get('DB_CONNECTION', 'mysql'),
+  connection: Env.get('DB_CONNECTION', 'pg'),
 
   /*
   |--------------------------------------------------------------------------
@@ -71,11 +71,11 @@ module.exports = {
   pg: {
     client: 'pg',
     connection: {
-      host: Env.get('DB_HOST', 'localhost'),
-      port: Env.get('DB_PORT', ''),
-      user: Env.get('DB_USER', 'root'),
-      password: Env.get('DB_PASSWORD', ''),
-      database: Env.get('DB_DATABASE', 'adonis')
+      host: Env.get('DB_HOST', 'ec2-34-206-252-187.compute-1.amazonaws.com'),
+      port: Env.get('DB_PORT', '5432'),
+      user: Env.get('DB_USER', 'tnpmjigxlfqktd'),
+      password: Env.get('DB_PASSWORD', '964a10f3338d136a6977fb5fb0b4104157c3f93d94f9f695093b5a81d3743e67'),
+      database: Env.get('DB_DATABASE', 'd9c7tvcadh8o61')
     }
   }
 }
