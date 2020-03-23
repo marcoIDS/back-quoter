@@ -16,7 +16,7 @@ const Hash = use('Hash')
 class UserSeeder {
   async run () {
     const roleAdmin = await Factory.model('App/Models/Role').create({name: 'Administrador',description:'Control total del sistema'});
-    const password = await Hash.make('1234');
+    const password = '1234'
     console.log(roleAdmin.id);
     const user = await Factory.model('App/Models/User').create({role_id: roleAdmin.id,password:password})
   }
