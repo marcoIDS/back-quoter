@@ -19,9 +19,8 @@ class BranchOfficeController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let branchoffices = await BranchOffice.query().with('supplier').with('destination').fetch()
-
-    return response.status(200).json(branchoffices);
+    console.log(request.all());
+    return await BranchOffice.query().filter(request.all()).with('supplier').with('destination').fetch()
   }
 
   /**

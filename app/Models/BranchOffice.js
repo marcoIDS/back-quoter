@@ -2,10 +2,12 @@
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
+const BranchOfficeFilter = use('App/ModelFilters/BranchOfficeFilter')
 
 class BranchOffice extends Model {
     static boot () {
         super.boot()
+        this.addTrait('@provider:Filterable', BranchOfficeFilter)
         this.addHook("beforeCreate", "BranchOfficeHook.uuid");
     }
     static get primaryKey () {

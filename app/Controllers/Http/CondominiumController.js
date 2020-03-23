@@ -19,9 +19,7 @@ class CondominiumController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let condominiums = await Condominium.query().with('branchOffice').fetch();
-
-    return response.status(200).json(condominiums);
+    return await Condominium.query().filter(request.all()).with('branchOffice').fetch()
   }
 
   /**

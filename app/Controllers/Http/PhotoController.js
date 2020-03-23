@@ -19,9 +19,8 @@ class PhotoController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let photos = await Photo.query().with('service').with('condominum').fetch();
-
-    return response.status(200).json(photos);
+    console.log(request.all());
+    return await Photo.query().filter(request.all()).with('service').with('condominum').fetch()    
   }
 
   /**

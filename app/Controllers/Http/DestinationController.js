@@ -19,9 +19,7 @@ class DestinationController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let destination = await Destination.all();
-
-    return response.status(200).json(destination);
+    return await Destination.query().filter(request.all()).fetch()
   }
 
   /**

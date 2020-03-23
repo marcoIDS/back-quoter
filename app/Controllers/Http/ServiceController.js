@@ -19,8 +19,7 @@ class ServiceController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let services = await Service.query().with('condominum').with('branchOffice').fetch();
-    return response.status(200).json(services);
+    return await Service.query().filter(request.all()).with('condominum').with('branchOffice').fetch()    
   }
 
   /**

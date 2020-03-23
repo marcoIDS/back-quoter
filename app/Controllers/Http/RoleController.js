@@ -19,9 +19,7 @@ class RoleController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let roles = await Role.all();
-
-    return response.status(200).json(roles);
+    return await Role.query().filter(request.all()).fetch()
   }
 
   /**

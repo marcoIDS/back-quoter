@@ -19,9 +19,7 @@ class ServiceTypeController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let serviceTypes = await ServiceType.all();
-
-    return response.status(200).json(serviceTypes);
+    return await ServiceType.query().filter(request.all()).fetch()    
   }
 
   /**

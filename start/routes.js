@@ -33,7 +33,7 @@ Route.group(() =>{
     Route.delete('deleteUser/:id','AuthController.deleteUser').middleware(['auth:api'])
     Route.put('updateUser/:id','AuthController.updateUser').middleware(['auth:appi'])
     
-    Route.resource('role','RoleController').middleware(['auth:appi'])
+    Route.resource('role','RoleController').middleware(['auth:api'])
     
     Route.resource('supplier','SupplierController').middleware(['auth:api'])
     Route.resource('branchOffice','BranchOfficeController').middleware(['auth:api'])
