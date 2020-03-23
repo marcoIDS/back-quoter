@@ -6,9 +6,6 @@ const Env = use('Env')
 /** @type {import('@adonisjs/ignitor/src/Helpers')} */
 const Helpers = use('Helpers')
 
-const Url = require('url-parse')
-const DATABASE_URL = new Url(Env.get('DATABASE_URL'))
-
 module.exports = {
   /*
   |--------------------------------------------------------------------------
@@ -19,7 +16,7 @@ module.exports = {
   | interacting with SQL databases.
   |
   */
-  connection: Env.get('DB_CONNECTION', 'pg'),
+  connection: Env.get('DB_CONNECTION', 'mysql'),
 
   /*
   |--------------------------------------------------------------------------
@@ -71,26 +68,14 @@ module.exports = {
   | npm i --save pg
   |
   */
- //pg connection
-  /*pg: {
-    client: 'pg',
-    connection: {
-      host: Env.get('DB_HOST', 'ec2-52-86-73-86.compute-1.amazonaws.com'),
-      port: Env.get('DB_PORT', '5432'),
-      user: Env.get('DB_USER', 'mxrmnwxzirraju'),
-      password: Env.get('DB_PASSWORD', '9c8d062ea6c261d4b9d1661fa8ce9b194ba40073f1e15d1df40d11b98ce35e07'),
-      database: Env.get('DB_DATABASE', 'dcb785a69fleuf')
-    }
-  }*/
-
   pg: {
     client: 'pg',
     connection: {
-      host: Env.get('DB_HOST', DATABASE_URL.hostname),
-      port: Env.get('DB_PORT', DATABASE_URL.port),
-      user: Env.get('DB_USER', DATABASE_URL.username),
-      password: Env.get('DB_PASSWORD', DATABASE_URL.password),
-      database: Env.get('DB_DATABASE', DATABASE_URL.pathname.substr(1))
+      host: Env.get('DB_HOST', 'ec2-34-206-252-187.compute-1.amazonaws.com'),
+      port: Env.get('DB_PORT', '5432'),
+      user: Env.get('DB_USER', 'tnpmjigxlfqktd'),
+      password: Env.get('DB_PASSWORD', '964a10f3338d136a6977fb5fb0b4104157c3f93d94f9f695093b5a81d3743e67'),
+      database: Env.get('DB_DATABASE', 'd9c7tvcadh8o61')
     }
-   }
+  }
 }

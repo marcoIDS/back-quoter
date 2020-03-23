@@ -29,6 +29,7 @@
     "adonis-lucid-filter": "^1.0.5",
     "mysql": "^2.18.1",
     "pg": "^7.18.2",
+    "url-parse": "^1.4.7",
     "uuid": "^3.4.0"
   },
   "devDependencies": {},
