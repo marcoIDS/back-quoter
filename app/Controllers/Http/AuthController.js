@@ -13,8 +13,8 @@ class AuthController {
   async login ({ request, response, auth }) {
     const {email, password} = request.all();
     const user = await auth.attempt(email,password);
-
-    return response.json(user);
+    const dataUser = await User.query().where('email',email).with('role').fetch();
+    return response.json({user,dataUser});
   }
   
   async register ({ request, response, auth }) {
