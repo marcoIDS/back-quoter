@@ -6,6 +6,9 @@ const Env = use('Env')
 /** @type {import('@adonisjs/ignitor/src/Helpers')} */
 const Helpers = use('Helpers')
 
+const Url = require('url-parse')
+const DATABASE_URL = new Url(Env.get('DATABASE_URL'))
+
 module.exports = {
   /*
   |--------------------------------------------------------------------------
@@ -69,7 +72,7 @@ module.exports = {
   |
   */
  //pg connection
-  pg: {
+  /*pg: {
     client: 'pg',
     connection: {
       host: Env.get('DB_HOST', 'ec2-52-86-73-86.compute-1.amazonaws.com'),
@@ -78,5 +81,16 @@ module.exports = {
       password: Env.get('DB_PASSWORD', '9c8d062ea6c261d4b9d1661fa8ce9b194ba40073f1e15d1df40d11b98ce35e07'),
       database: Env.get('DB_DATABASE', 'dcb785a69fleuf')
     }
-  }
+  }*/
+
+  pg: {
+    client: 'pg',
+    connection: {
+      host: Env.get('DB_HOST', DATABASE_URL.hostname),
+      port: Env.get('DB_PORT', DATABASE_URL.port),
+      user: Env.get('DB_USER', DATABASE_URL.username),
+      password: Env.get('DB_PASSWORD', DATABASE_URL.password),
+      database: Env.get('DB_DATABASE', DATABASE_URL.pathname.substr(1))
+    }
+   }
 }
