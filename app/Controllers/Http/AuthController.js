@@ -15,6 +15,8 @@ class AuthController {
     const user = await auth.attempt(email,password);
     const dataUser = await User.findBy('email', email)
     const role = await dataUser.role().fetch()
+    //Nuevas configuraciones
+    //agregado de pg para hacer push a heroku
     return response.json({user,dataUser,role});
   }
   
