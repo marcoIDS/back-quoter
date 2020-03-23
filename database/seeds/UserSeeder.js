@@ -12,7 +12,7 @@
 
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory')
-
+const Hash = use('Hash')
 class UserSeeder {
   async run () {
     const roleAdmin = await Factory.model('App/Models/Role').create({name: 'Administrador',description:'Control total del sistema'});
