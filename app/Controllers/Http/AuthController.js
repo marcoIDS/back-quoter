@@ -13,8 +13,9 @@ class AuthController {
   async login ({ request, response, auth }) {
     const {email, password} = request.all();
     const user = await auth.attempt(email,password);
-    const dataUser = await User.query().where('email',email).with('role').fetch();
-    return response.json({user,dataUser});
+    const dataUser = await User.findBy('email', email)
+    const role = await dataUser.role().fetch()
+    return response.json({user,dataUser,role});
   }
   
   async register ({ request, response, auth }) {
