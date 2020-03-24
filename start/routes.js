@@ -41,5 +41,5 @@ Route.group(() =>{
     Route.resource('destination','DestinationController').middleware(['auth:api'])
     Route.resource('photo','PhotoController').middleware(['auth:api'])
     Route.resource('service','ServiceController').middleware(['auth:api'])
-    Route.resource('servcieType','ServiceTypeController').middleware(['auth:api'])
+    Route.resource('serviceType','ServiceTypeController').middleware(['auth:api'])
   }).prefix('api/v1');
